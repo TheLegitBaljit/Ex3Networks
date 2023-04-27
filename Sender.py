@@ -13,8 +13,10 @@ def send_file(filename, host, port):
     while True:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
+        print("Changing CC algorithm to cubic")
         s.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, "cubic".encode())
         # Send first half of file
+        print("Sending the first half")
         s.sendall(data[:part_size])
         s.close()
 
@@ -27,13 +29,16 @@ def send_file(filename, host, port):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((host, port))
             # Send second half of file
+            print("Changing CC algorithm to Reno")
             s.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, "reno".encode())
+            print("Sending the second half")
             s.sendall(data[part_size:])
             s.close()
         else:
             s.close()
             print("Connection was cut")
             break
+        print("File sent.")
         # Ask user if they want to send the file again
         send_again = input('Send file again? (y/n): ')
         if send_again.lower() != 'y':
@@ -43,6 +48,7 @@ def send_file(filename, host, port):
             s.close()
             break
         else:
+            print("DONE!")
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((host, port))
             s.sendall("_keep_sending_".encode())

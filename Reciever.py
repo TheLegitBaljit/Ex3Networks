@@ -20,8 +20,7 @@ def receive_file(filename, host, port):
                 start_time = time.time()
                 data = ""
                 while True:
-                    chunk = conn.recv(2000000).decode()
-                    print(chunk.__sizeof__())
+                    chunk = conn.recv(1000000).decode()
                     if len(chunk) <= 0:
                         break
                     data += chunk
@@ -44,8 +43,7 @@ def receive_file(filename, host, port):
                 start_time = time.time()
                 data = ""
                 while True:
-                    chunk = conn.recv(2000000).decode()
-                    print(chunk.__sizeof__())
+                    chunk = conn.recv(1000000).decode()
                     if len(chunk) <= 0:
                         break
                     data += chunk
